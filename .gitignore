@@ -1,0 +1,13 @@
+*.o
+*.moc
+*.log
+*.usr
+*.exe
+*.user
+moc_*.*
+Makefile
+Makefile.*
+*.user*
+debug/
+release/
+.*#
