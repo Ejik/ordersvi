@@ -15,6 +15,9 @@ AccessReader::AccessReader()
 IndicatorsModel AccessReader::getData() {
 
     IndicatorsModel model;
+    model.setAmount(0);
+    model.setSum(0);
+    model.setCash(0);
 
     if (createConnection()) {
 
@@ -23,26 +26,32 @@ IndicatorsModel AccessReader::getData() {
         QString year = QString::number(currentDate.year());
         QString date1 = "#1\\1\\2010#"; //"#" + month + "\\1\\" + year + "#";
         QString date2 = "#1\\4\\2010#"; //"#" + month + "\\" + QString::number(currentDate.daysInMonth())+ "\\" + year + "#";
+        QString userID = "     1";
 
         QSqlQuery query;
 
-        QString sql = "SELECT COUNT(DH2457.SP2451) AS Amount, SUM(DH2457.SP2451) AS Summa "
-                "FROM DH2457 LEFT JOIN _1SJOURN AS Journal ON DH2457.IDDOC=Journal.IDDOC "
-                "WHERE (((Journal.Date) Between ?date1 AND ?date2))";
-        sql = "SELECT Amount, Summa FROM Zapros";
+        QString sql = "SELECT COUNT(1) AS Amount, SUM(DH2457.SP2451) AS Summa , Users.ID AS ManagerID "
+                "FROM (DH2457 INNER JOIN _1SJOURN AS Journal ON DH2457.IDDOC=Journal.IDDOC) "
+                "INNER JOIN SC30 AS Users ON Journal.SP74 = Users.ID "
+                "WHERE Users.ID = :userID "
+                "AND Journal.Date Between :date1 AND :date2 "
+                "GROUP BY Users.ID;";
+
 
         query.prepare(sql);
 
-        query.bindValue(":date1", date1);
-        query.bindValue(":date2", date2);
+        query.bindValue(":date1", QDate(2010,1,1));
+        query.bindValue(":date2", QDate(2010,1,4));
+        query.bindValue(":userID", userID);
 
-        if (query.exec(sql)) {
+        if (query.exec()) {
 
-            query.next();
-
-            model.setAmount(query.value(0).toInt());
-            model.setSum(query.value(1).toInt());
-            model.setCash(0);
+            query.first();
+            if (query.isValid()) {
+                model.setAmount(query.value(0).toInt());
+                model.setSum(query.value(1).toInt());
+                model.setCash(0);
+            }
         } else {
             qDebug() << query.lastError();
         }
