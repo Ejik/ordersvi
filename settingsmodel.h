@@ -1,13 +1,15 @@
 #ifndef SETTINGSMODEL_H
 #define SETTINGSMODEL_H
 
-class Settings {
+class SettingsModel
+{
 
 private:
     int userid;
 public:
-    int getUserID();
+    SettingsModel() { userid = 0; }
+    int getUserID() { return userid; }
     void setUserID(int value) { userid = value; }
 
-}
+};
 #endif // SETTINGSMODEL_H

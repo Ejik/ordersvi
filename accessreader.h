@@ -11,6 +11,7 @@ private:
 public:
     AccessReader();
     IndicatorsModel getData();
+
 };
 
 #endif // ACCESSREADER_H

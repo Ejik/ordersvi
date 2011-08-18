@@ -1,14 +1,21 @@
 #include "logindialog.h"
 #include "ui_logindialog.h"
 
-loginDialog::loginDialog(QWidget *parent) :
+LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::loginDialog)
+    ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
 }
 
-loginDialog::~loginDialog()
+LoginDialog::~LoginDialog()
 {
     delete ui;
+}
+
+int LoginDialog::showDialog(SettingsModel* settings, AccessReader* accessReader)
+{
+    settings->setUserID(123);
+
+    return this->exec();
 }
