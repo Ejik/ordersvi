@@ -12,11 +12,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    accessreader.cpp
+    accessreader.cpp \
+    logindialog.cpp
 
 HEADERS  += mainwindow.h \
     indicatorsmodel.h \
     accessreader.h \
-    settingsmodel.h
+    settingsmodel.h \
+    logindialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    logindialog.ui
