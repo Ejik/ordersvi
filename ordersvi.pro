@@ -16,6 +16,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     indicatorsmodel.h \
-    accessreader.h
+    accessreader.h \
+    settingsmodel.h
 
 FORMS    += mainwindow.ui
