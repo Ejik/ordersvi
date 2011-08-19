@@ -14,7 +14,7 @@ LoginDialog::~LoginDialog()
     delete ui;
 }
 
-int LoginDialog::showDialog(SettingsModel* settings, AccessReader* accessReader)
+int LoginDialog::showDialog(SettingsModel *settings, AccessReader *accessReader)
 {
 
     QMap<QString, QString> userslist = accessReader->getUsersList();

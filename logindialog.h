@@ -16,7 +16,7 @@ class LoginDialog : public QDialog
 public:
     explicit LoginDialog(QWidget *parent = 0);
     ~LoginDialog();
-    int showDialog(SettingsModel* settings, AccessReader* accessReader);
+    int showDialog(SettingsModel *settings, AccessReader *accessReader);
 
 private:
     Ui::LoginDialog *ui;

@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "indicatorsmodel.h"
 #include "accessreader.h"
+#include "logindialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,17 +18,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::bindObjects(SettingsModel *settings, AccessReader *accessReader)
 {
-
+    this->settings = settings;
+    this->accessReader = accessReader;
 }
 
 
 void MainWindow::on_actionLogin_triggered()
 {
-    AccessReader reader;
-    IndicatorsModel model = reader.getData();
+    LoginDialog loginView;
+    if (loginView.showDialog(settings, accessReader) == QDialog::Accepted) {
 
-    ui->lcdAmount->display(model.getAmount());
-    ui->lcdSum->display(model.getSum());
-    ui->lcdCash->display(model.getCash());
+        IndicatorsModel model = accessReader->getData();
+
+        ui->lcdAmount->display(model.getAmount());
+        ui->lcdSum->display(model.getSum());
+        ui->lcdCash->display(model.getCash());
+    }
 }
 
+
+void MainWindow::on_actionExit_triggered()
+{
+    QApplication::exit();
+}

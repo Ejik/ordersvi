@@ -13,10 +13,18 @@ int main(int argc, char *argv[])
 
     SettingsModel settings;
     AccessReader accessReader;
+    accessReader.bindObjects(&settings);
 
-    MainWindow w;
-    w.show();
-    w.bindObjects(&settings, &accessReader);
+    LoginDialog loginView;
+    if (loginView.showDialog(&settings, &accessReader) == QDialog::Accepted) {
 
-    return a.exec();
+        qDebug() << "Current userID " << settings.getUserID();
+
+        MainWindow w;
+        w.show();
+        w.bindObjects(&settings, &accessReader);
+
+        return a.exec();
+    }
+    return 0;
 }

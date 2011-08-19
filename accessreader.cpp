@@ -15,7 +15,12 @@ AccessReader::AccessReader()
 
 AccessReader::~AccessReader()
 {
-    //db.close();
+    db.close();
+}
+
+void AccessReader::bindObjects(SettingsModel *settings)
+{
+    this->settings = settings;
 }
 
 IndicatorsModel AccessReader::getData() {
@@ -33,8 +38,7 @@ IndicatorsModel AccessReader::getData() {
         QString month = QString::number(currentDate.month());
         QString year = QString::number(currentDate.year());
         QString date1 = "#1\\1\\2010#"; //"#" + month + "\\1\\" + year + "#";
-        QString date2 = "#1\\4\\2010#"; //"#" + month + "\\" + QString::number(currentDate.daysInMonth())+ "\\" + year + "#";
-        QString userID = "     1";
+        QString date2 = "#1\\4\\2010#"; //"#" + month + "\\" + QString::number(currentDate.daysInMonth())+ "\\" + year + "#";        
 
         QSqlQuery query;
 
@@ -50,7 +54,7 @@ IndicatorsModel AccessReader::getData() {
 
         query.bindValue(":date1", QDate(2010,1,1));
         query.bindValue(":date2", QDate(2010,1,4));
-        query.bindValue(":userID", userID);
+        query.bindValue(":userID", settings->getUserID());
 
         if (query.exec()) {
 
@@ -91,19 +95,20 @@ bool AccessReader::createConnection() {
 
 QMap<QString, QString> AccessReader::getUsersList()
 {   
+    if (!connectionCreated) {
+        createConnection();
+    }
+
     QMap<QString, QString> map;
     QSqlQuery query;
 
     QString sql = "SELECT ID, DESCR FROM SC30";
 
-    if (!connectionCreated) {
-        createConnection();
-    }
 
     if (!query.exec(sql)) {
         qDebug() << query.lastError();
     }
-    if (query.next()) {
+    while (query.next()) {
         map.insert(query.value(0).toString(), query.value(1).toString());
     }
 

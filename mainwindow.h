@@ -22,8 +22,12 @@ private slots:
 
     void on_actionLogin_triggered();
 
+    void on_actionExit_triggered();
+
 private:
     Ui::MainWindow *ui;
+    SettingsModel *settings;
+    AccessReader *accessReader;
 };
 
 #endif // MAINWINDOW_H
