@@ -9,7 +9,10 @@
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(ordersvi);
+
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+
     QApplication a(argc, argv);
 
 

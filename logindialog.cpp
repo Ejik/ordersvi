@@ -27,6 +27,7 @@ int LoginDialog::showDialog(SettingsModel *settings, AccessReader *accessReader)
     int result =  this->exec();
     if (result == QDialog::Accepted) {
         settings->setUserID(ui->userCombo->itemData(ui->userCombo->currentIndex()).toString());
+        settings->setUserName(ui->userCombo->itemText(ui->userCombo->currentIndex()));
     }
     return result;
 }
