@@ -18,7 +18,7 @@ AccessReader::~AccessReader()
     db.close();
 }
 
-void AccessReader::bindObjects(SettingsModel *settings)
+void AccessReader::inject(SettingsModel *settings)
 {
     this->settings = settings;
 }

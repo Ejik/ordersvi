@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void bindObjects(SettingsModel* settings, AccessReader* accessReader);
+    void inject(SettingsModel* settings, AccessReader* accessReader);
 
 private slots:
 

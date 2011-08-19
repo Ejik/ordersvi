@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateModel()));
-    timer.start(1000*60);
+    timer.start(1000);
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +19,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::bindObjects(SettingsModel *settings, AccessReader *accessReader)
+void MainWindow::inject(SettingsModel *settings, AccessReader *accessReader)
 {
     this->settings = settings;
     this->accessReader = accessReader;
@@ -35,8 +35,11 @@ void MainWindow::updateIndicators()
 
 void MainWindow::updateModel()
 {
+    statusBar()->showMessage(tr("Получение данных..."));
+
     indicatorsModel = accessReader->getData();
     updateIndicators();
+    statusBar()->clearMessage();
 }
 
 void MainWindow::on_actionLogin_triggered()

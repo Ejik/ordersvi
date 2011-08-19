@@ -23,6 +23,9 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
     <property name="numDigits">
      <number>5</number>
     </property>

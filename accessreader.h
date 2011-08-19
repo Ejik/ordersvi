@@ -19,7 +19,7 @@ public:
     ~AccessReader();
     IndicatorsModel getData();
     QMap<QString, QString> getUsersList();
-    void bindObjects(SettingsModel *settings);
+    void inject(SettingsModel *settings);
 };
 
 #endif // ACCESSREADER_H
