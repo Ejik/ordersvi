@@ -39,6 +39,7 @@ void MainWindow::updateModel()
 
     indicatorsModel = accessReader->getData();
     updateIndicators();
+
     statusBar()->clearMessage();
 }
 

@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     LoginDialog loginView;
     if (loginView.showDialog(&settings, &accessReader) == QDialog::Accepted) {
 
-        qDebug() << "Current userID " << settings.getUserID();
+        qDebug() << "Current userID: " << settings.getUserID();
 
         MainWindow w;
         w.show();
