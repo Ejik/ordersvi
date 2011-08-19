@@ -7,6 +7,7 @@ private:
     int sum;
     int cash;
 public:
+    IndicatorsModel() { amount = 0; sum = 0; cash = 0; }
     int getAmount() { return amount; }
     int getSum() { return sum; }
     int getCash() { return cash; }

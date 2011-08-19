@@ -10,16 +10,24 @@
 
 AccessReader::AccessReader()
 {
+    connectionCreated = false;
+}
+
+AccessReader::~AccessReader()
+{
+    //db.close();
 }
 
 IndicatorsModel AccessReader::getData() {
 
-    IndicatorsModel model;
-    model.setAmount(0);
-    model.setSum(0);
-    model.setCash(0);
+    IndicatorsModel model;   
 
-    if (createConnection()) {
+    if (!connectionCreated) {
+        createConnection();
+    }
+
+    if (connectionCreated)
+    {
 
         QDate currentDate = QDate::currentDate();
         QString month = QString::number(currentDate.month());
@@ -61,7 +69,7 @@ IndicatorsModel AccessReader::getData() {
 
 bool AccessReader::createConnection() {
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
+    db = QSqlDatabase::addDatabase("QODBC");
     db.setUserName("admin");
     //db.setPassword();
 
@@ -75,6 +83,29 @@ bool AccessReader::createConnection() {
         return false;
     }
 
-    //db.close();
+
+    this->connectionCreated = true;
+
     return true;
+}
+
+QMap<QString, QString> AccessReader::getUsersList()
+{   
+    QMap<QString, QString> map;
+    QSqlQuery query;
+
+    QString sql = "SELECT ID, DESCR FROM SC30";
+
+    if (!connectionCreated) {
+        createConnection();
+    }
+
+    if (!query.exec(sql)) {
+        qDebug() << query.lastError();
+    }
+    if (query.next()) {
+        map.insert(query.value(0).toString(), query.value(1).toString());
+    }
+
+    return map;
 }

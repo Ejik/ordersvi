@@ -5,11 +5,11 @@ class SettingsModel
 {
 
 private:
-    int userid;
+    QString userid;
 public:
-    SettingsModel() { userid = 0; }
-    int getUserID() { return userid; }
-    void setUserID(int value) { userid = value; }
+    SettingsModel() { userid = ""; }
+    QString getUserID() { return userid; }
+    void setUserID(QString value) { userid = value; }
 
 };
 #endif // SETTINGSMODEL_H

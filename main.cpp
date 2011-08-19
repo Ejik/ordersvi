@@ -14,16 +14,9 @@ int main(int argc, char *argv[])
     SettingsModel settings;
     AccessReader accessReader;
 
-    LoginDialog loginDlg;
-    if (loginDlg.showDialog(&settings, &accessReader) == QDialog::Accepted)
-    {
-        qDebug() << settings.getUserID();
+    MainWindow w;
+    w.show();
+    w.bindObjects(&settings, &accessReader);
 
-        MainWindow w;
-        w.show();
-
-        return a.exec();
-    }
-
-    return 0;
+    return a.exec();
 }

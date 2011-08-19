@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "accessreader.h"
+#include "settingsmodel.h"
 
 namespace Ui {
     class MainWindow;
@@ -14,9 +16,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void bindObjects(SettingsModel* settings, AccessReader* accessReader);
 
 private slots:
-    void on_pushButton_clicked();
+
+    void on_actionLogin_triggered();
 
 private:
     Ui::MainWindow *ui;

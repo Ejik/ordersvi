@@ -15,7 +15,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::bindObjects(SettingsModel *settings, AccessReader *accessReader)
+{
+
+}
+
+
+void MainWindow::on_actionLogin_triggered()
 {
     AccessReader reader;
     IndicatorsModel model = reader.getData();
@@ -24,3 +30,4 @@ void MainWindow::on_pushButton_clicked()
     ui->lcdSum->display(model.getSum());
     ui->lcdCash->display(model.getCash());
 }
+
