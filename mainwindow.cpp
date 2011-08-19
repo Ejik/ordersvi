@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    connect(&timer, SIGNAL(timeout()), this, SLOT(updateModel()));
+    timer.start(1000*60);
 }
 
 MainWindow::~MainWindow()
@@ -23,16 +26,25 @@ void MainWindow::bindObjects(SettingsModel *settings, AccessReader *accessReader
 }
 
 
+void MainWindow::updateIndicators()
+{
+    ui->lcdAmount->display(indicatorsModel.getAmount());
+    ui->lcdSum->display(indicatorsModel.getSum());
+    ui->lcdCash->display(indicatorsModel.getCash());
+}
+
+void MainWindow::updateModel()
+{
+    indicatorsModel = accessReader->getData();
+    updateIndicators();
+}
+
 void MainWindow::on_actionLogin_triggered()
 {
     LoginDialog loginView;
     if (loginView.showDialog(settings, accessReader) == QDialog::Accepted) {
 
-        IndicatorsModel model = accessReader->getData();
-
-        ui->lcdAmount->display(model.getAmount());
-        ui->lcdSum->display(model.getSum());
-        ui->lcdCash->display(model.getCash());
+        updateIndicators();
     }
 }
 

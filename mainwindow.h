@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 #include "accessreader.h"
+#include "indicatorsmodel.h"
 #include "settingsmodel.h"
 
 namespace Ui {
@@ -24,10 +26,16 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void updateModel();
+
 private:
     Ui::MainWindow *ui;
     SettingsModel *settings;
     AccessReader *accessReader;
+    IndicatorsModel indicatorsModel;
+    QTimer timer;
+
+    void updateIndicators();
 };
 
 #endif // MAINWINDOW_H
