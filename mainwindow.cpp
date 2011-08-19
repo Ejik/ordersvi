@@ -57,3 +57,8 @@ void MainWindow::on_actionExit_triggered()
 {
     QApplication::exit();
 }
+
+void MainWindow::on_actionSettings_triggered()
+{
+
+}

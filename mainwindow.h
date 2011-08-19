@@ -28,6 +28,8 @@ private slots:
 
     void updateModel();
 
+    void on_actionSettings_triggered();
+
 private:
     Ui::MainWindow *ui;
     SettingsModel *settings;
