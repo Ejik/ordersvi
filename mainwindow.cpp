@@ -1,8 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "indicatorsmodel.h"
 #include "accessreader.h"
+#include "indicatorsmodel.h"
 #include "logindialog.h"
+#include "settingsview.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    timer.start(1000);
+    timer.start(1000*60);
 
     createActions();
     createMainMenu();
@@ -43,7 +44,10 @@ void MainWindow::updateView()
     ui->lcdSum->display(indicatorsModel.getSum());
     ui->lcdCash->display(indicatorsModel.getCash());
 
-    trayIcon.setToolTip(tr("Текущий пользователь: ") + settings->getUserName());
+    trayIcon.setToolTip(tr("Текущий пользователь: ") + settings->getUserName() + " " +
+                        tr("Кол-во: ") + QString::number(indicatorsModel.getAmount()) + " " +
+                        tr("Сумма: ") + QString::number(indicatorsModel.getSum()) + " " +
+                        tr("Выручка: ") + QString::number(indicatorsModel.getCash()));
 }
 
 void MainWindow::updateModel()
@@ -68,7 +72,10 @@ void MainWindow::on_actionLogin_triggered()
 
 void MainWindow::on_actionSettings_triggered()
 {
+    SettingsView settingsView;
+    if (settingsView.exec() == QDialog::Accepted) {
 
+    }
 }
 
 void MainWindow::on_aboutView_triggered()

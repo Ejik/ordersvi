@@ -13,16 +13,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     accessreader.cpp \
-    logindialog.cpp
+    logindialog.cpp \
+    settingsview.cpp
 
 HEADERS  += mainwindow.h \
     indicatorsmodel.h \
     accessreader.h \
     settingsmodel.h \
-    logindialog.h
+    logindialog.h \
+    settingsview.h
 
 FORMS    += mainwindow.ui \
-    logindialog.ui
+    logindialog.ui \
+    settingsview.ui
 
 RESOURCES += \
     ordersvi.qrc
