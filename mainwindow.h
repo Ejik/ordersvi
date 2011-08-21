@@ -22,6 +22,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void inject(SettingsModel* settings, AccessReader* accessReader);
+    void updateView();
 
 private slots:
 
@@ -53,7 +54,6 @@ private:
     void createActions();
     void createMainMenu();
     void createTrayIcon();
-    void updateView();
 };
 
 #endif // MAINWINDOW_H

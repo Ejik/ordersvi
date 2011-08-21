@@ -42,6 +42,9 @@ void MainWindow::inject(SettingsModel *settings, AccessReader *accessReader)
 void MainWindow::updateView()
 {
 
+    // update current username
+    ui->currentUserLabel->setText(settings->getUserName());
+
     // always on top setting
     Qt::WindowFlags flags = this->windowFlags();
     if (settings->getAlwaysOnTop()) {
@@ -70,6 +73,7 @@ void MainWindow::updateModel()
     statusBar()->showMessage(tr("Получение данных..."));
 
     indicatorsModel = accessReader->getData();
+
     updateView();
 
     statusBar()->clearMessage();
@@ -89,6 +93,7 @@ void MainWindow::actionSettings_triggered()
     SettingsView settingsView(this);
     settingsView.inject(settings, accessReader);
     settingsView.updateView();
+
     if (settingsView.exec() == QDialog::Accepted) {
 
         settings->setAlwaysOnTop(settingsView.isAlwaysOnTop());

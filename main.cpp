@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
         MainWindow w;
         w.show();
         w.inject(&settings, &accessReader);
-
+        w.updateView();
         return a.exec();
     }
     return 0;
