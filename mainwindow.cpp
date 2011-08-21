@@ -44,9 +44,9 @@ void MainWindow::updateView()
     ui->lcdSum->display(indicatorsModel.getSum());
     ui->lcdCash->display(indicatorsModel.getCash());
 
-    trayIcon.setToolTip(tr("Текущий пользователь: ") + settings->getUserName() + " " +
-                        tr("Кол-во: ") + QString::number(indicatorsModel.getAmount()) + " " +
-                        tr("Сумма: ") + QString::number(indicatorsModel.getSum()) + " " +
+    trayIcon.setToolTip(tr("Текущий пользователь: ") + settings->getUserName() + "\n" +
+                        tr("Кол-во: ") + QString::number(indicatorsModel.getAmount()) + "\n" +
+                        tr("Сумма: ") + QString::number(indicatorsModel.getSum()) + "\n" +
                         tr("Выручка: ") + QString::number(indicatorsModel.getCash()));
 }
 
