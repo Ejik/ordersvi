@@ -1,6 +1,7 @@
 #include "settingsview.h"
 #include "ui_settingsview.h"
 
+
 SettingsView::SettingsView(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsView)
@@ -8,6 +9,7 @@ SettingsView::SettingsView(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->buttonBox, SIGNAL(accepted()), &tableModel, SLOT(submitAll()));
+    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
 
@@ -30,8 +32,19 @@ SettingsView::~SettingsView()
     delete ui;
 }
 
-void SettingsView::inject(AccessReader *accessReader)
+void SettingsView::inject(SettingsModel *settings, AccessReader *accessReader)
 {
     this->accessReader = accessReader;
+    this->settings = settings;
 }
 
+
+void SettingsView::updateView()
+{
+   ui->alwaysOnTopBox->setChecked(settings->getAlwaysOnTop());
+}
+
+bool SettingsView::isAlwaysOnTop()
+{
+    return ui->alwaysOnTopBox->isChecked();
+}

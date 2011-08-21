@@ -25,17 +25,13 @@ public:
 
 private slots:
 
-    void on_actionLogin_triggered();
-
+    void aboutView_triggered();
+    void actionSettings_triggered();
+    void actionLogin_triggered();
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void restoreAction_triggered();
     void updateModel();
 
-    void on_actionSettings_triggered();
-
-    void on_aboutView_triggered();
-
-    void on_restoreAction_triggered();
-
-    void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
     Ui::MainWindow *ui;

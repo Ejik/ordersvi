@@ -5,11 +5,15 @@ class SettingsModel
 {
 
 private:
+    bool alwaysOnTop;
     QString userid;
     QString userName;
 
 public:
-    SettingsModel() { userid = ""; }
+    SettingsModel() { userid = ""; userName = ""; alwaysOnTop = false; }
+
+    bool getAlwaysOnTop() { return alwaysOnTop; }
+    void setAlwaysOnTop(bool value) { alwaysOnTop  = value; }
 
     QString getUserID() { return userid; }
     void setUserID(QString value) { userid = value; }

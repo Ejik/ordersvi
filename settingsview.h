@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSqlTableModel>
 #include "accessreader.h"
+#include "settingsmodel.h"
 
 namespace Ui {
     class SettingsView;
@@ -16,13 +17,18 @@ class SettingsView : public QDialog
 public:
     explicit SettingsView(QWidget *parent = 0);
     ~SettingsView();
-    void inject(AccessReader *accessReader);
+    void inject(SettingsModel *settings, AccessReader *accessReader);
+    void updateView();
+    bool isAlwaysOnTop();
+
 private slots:
+
 
 private:
     Ui::SettingsView *ui;
     QSqlTableModel tableModel;
     AccessReader *accessReader;
+    SettingsModel *settings;
 };
 
 #endif // SETTINGSVIEW_H
