@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    timer.start(1000*60);
+    timer.start(1000*6);
 
     createActions();
     createMainMenu();
@@ -55,11 +55,10 @@ void MainWindow::updateView()
         this->show();
     }
 
-
     // update indicators
-    ui->lcdAmount->display(indicatorsModel.getAmount());
-    ui->lcdSum->display(indicatorsModel.getSum());
-    ui->lcdCash->display(indicatorsModel.getCash());
+    ui->lcdAmount->display(indicatorsModel.getAmountPersent());
+    ui->lcdSum->display(indicatorsModel.getSumPersent());
+    ui->lcdCash->display(indicatorsModel.getCashPersent());
 
     // update tray
     trayIcon.setToolTip(tr("Текущий пользователь: ") + settings->getUserName() + "\n" +
@@ -94,12 +93,14 @@ void MainWindow::actionSettings_triggered()
     settingsView.inject(settings, accessReader);
     settingsView.updateView();
 
+    timer.stop();
     if (settingsView.exec() == QDialog::Accepted) {
 
         settings->setAlwaysOnTop(settingsView.isAlwaysOnTop());
 
         updateView();
     }
+    timer.start();
 }
 
 void MainWindow::aboutView_triggered()

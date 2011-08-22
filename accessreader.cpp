@@ -71,18 +71,39 @@ IndicatorsModel AccessReader::getData() {
 
             query.first();
             if (query.isValid()) {
-                amount += query.value(0).toInt();
-                summa += query.value(1).toInt();
-                cash += 0;
+                amount = query.value(0).toInt();
+                summa = query.value(1).toInt();
+                cash = 0;
             }
         } else {
             qDebug() << query.lastError();
         }
 
-
         model.setAmount(amount);
         model.setSum(summa);
         model.setCash(cash);
+
+        // Получаем нормативные показатели за месяц
+        QSqlQuery normsQuery;
+        sql = "SELECT * "
+                "FROM Norms";
+        if (normsQuery.exec(sql)) {
+
+            // Кол-во
+            normsQuery.next();
+            model.setNAmount(normsQuery.value(currentMonth + 1).toInt());
+
+            // Сумма
+            normsQuery.next();
+            model.setNSum(normsQuery.value(currentMonth + 1).toInt());
+
+            // Выручка
+            normsQuery.next();
+            model.setNCash(normsQuery.value(currentMonth + 1).toInt());
+
+        } else {
+            qDebug() << normsQuery.lastError();
+        }
     }
     return model;
 }
