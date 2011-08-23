@@ -15,8 +15,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-
-    SettingsModel settings;
+    SettingsModel settings(a.applicationFilePath());
     AccessReader accessReader;
     accessReader.inject(&settings);
 

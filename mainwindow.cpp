@@ -117,7 +117,7 @@ void MainWindow::changeEvent (QEvent *event)
 void MainWindow::updateView()
 {        
     // update current username    
-    setWindowTitle("OrdersVi " + settings->getUserName());
+    setWindowTitle("OrdersVi - " + settings->getUserName());
 
     // update indicators
     ui->lcdAmount->display(indicatorsModel.getAmountPersent());
@@ -176,6 +176,8 @@ void MainWindow::actionSettings_triggered()
             this->show();
         }
 
+        // autostart application
+        settings->setAutoStartApplication(settingsView.isAutostartApplication());
     }
     timer.start();
 }

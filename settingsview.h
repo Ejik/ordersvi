@@ -20,6 +20,7 @@ public:
     void inject(SettingsModel *settings, AccessReader *accessReader);
     void updateView();
     bool isAlwaysOnTop();
+    bool isAutostartApplication();
 
 private slots:
 

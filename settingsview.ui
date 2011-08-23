@@ -43,6 +43,19 @@
         <string>Поверх всех окон</string>
        </property>
       </widget>
+      <widget class="QCheckBox" name="autostartApplicationBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>271</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Запускать OrdersVi при загрузке Windows</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="normsTab">
       <attribute name="title">
