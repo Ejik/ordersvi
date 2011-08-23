@@ -103,16 +103,6 @@ void MainWindow::updateView()
     // update current username    
     setWindowTitle("OrdersVi " + settings->getUserName());
 
-//    // always on top setting
-//    Qt::WindowFlags flags = this->windowFlags();
-//    if (settings->getAlwaysOnTop()) {
-//        this->setWindowFlags(flags | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
-//        this->show();
-//    } else {
-//        this->setWindowFlags(flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
-//        this->show();
-//    }
-
     // update indicators
     ui->lcdAmount->display(indicatorsModel.getAmountPersent());
     ui->lcdSum->display(indicatorsModel.getSumPersent());
@@ -160,7 +150,16 @@ void MainWindow::actionSettings_triggered()
 
         settings->setAlwaysOnTop(settingsView.isAlwaysOnTop());
 
-        updateView();
+        // always on top setting
+        Qt::WindowFlags flags = this->windowFlags();
+        if (settings->getAlwaysOnTop()) {
+            this->setWindowFlags(flags | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+            this->show();
+        } else {
+            this->setWindowFlags(flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
+            this->show();
+        }
+
     }
     timer.start();
 }
