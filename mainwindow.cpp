@@ -52,30 +52,54 @@ void MainWindow::paintEvent(QPaintEvent *)
     int i2Left(ui->lcdSum->geometry().left() + 10);
     int i3Left(ui->lcdCash->geometry().left() + 10);
 
+    QColor i1Color(Qt::red);
+    QColor i2Color(Qt::red);
+    QColor i3Color(Qt::red);
+
+    if ((indicatorsModel.getAmountPersent() >= 80) && ((indicatorsModel.getAmountPersent() < 95))) {
+        i1Color = Qt::yellow;
+    }
+    if ((indicatorsModel.getSumPersent() >= 80) && ((indicatorsModel.getSumPersent() < 95))) {
+        i2Color = Qt::yellow;
+    }
+    if ((indicatorsModel.getCashPersent() >= 80) && ((indicatorsModel.getCashPersent() < 95))) {
+        i3Color = Qt::yellow;
+    }
+
+    if (indicatorsModel.getAmountPersent() >= 95) {
+        i1Color = Qt::green;
+    }
+    if (indicatorsModel.getSumPersent() >= 95) {
+        i2Color = Qt::green;
+    }
+    if (indicatorsModel.getCashPersent() >= 95) {
+        i3Color = Qt::green;
+    }
+
 
     amountChart.setType(Nightcharts::Pie);//{Histogramm,Pie,DPie};
     amountChart.setLegendType(Nightcharts::Round);//{Round,Vertical}
     amountChart.setCords(i1Left,40,width,height);
-    amountChart.addPiece("Item2",Qt::red,100);
+    amountChart.addPiece(tr("Кол-во"), i1Color,100);
     amountChart.draw(&painter);
-    //PieChart.drawLegend(&painter);
+    //amountChart.drawLegend(&painter);
 
     sumChart.setType(Nightcharts::Pie);//{Histogramm,Pie,DPie};
     sumChart.setLegendType(Nightcharts::Round);//{Round,Vertical}
     sumChart.setCords(i2Left,40,width,height);
-    sumChart.addPiece("Item2",Qt::red,100);
+    sumChart.addPiece(tr("Сумма"),i2Color,100);
     sumChart.draw(&painter);
+    //sumChart.drawLegend(&painter);
 
     cashChart.setType(Nightcharts::Pie);//{Histogramm,Pie,DPie};
     cashChart.setLegendType(Nightcharts::Round);//{Round,Vertical}
     cashChart.setCords(i3Left,40,width,height);
-    cashChart.addPiece("Item2",Qt::red,100);
+    cashChart.addPiece("Выручка",i3Color,100);
     cashChart.draw(&painter);
 }
 
 void MainWindow::updateView()
-{
-
+{        
     // update current username    
     setWindowTitle("OrdersVi " + settings->getUserName());
 
@@ -99,6 +123,10 @@ void MainWindow::updateView()
                         tr("Кол-во: ") + QString::number(indicatorsModel.getAmount()) + "\n" +
                         tr("Сумма: ") + QString::number(indicatorsModel.getSum()) + "\n" +
                         tr("Выручка: ") + QString::number(indicatorsModel.getCash()));
+
+
+    // обновим всю форму, чтобы перерисовались диаграммы
+    repaint();
 }
 
 void MainWindow::updateModel()
