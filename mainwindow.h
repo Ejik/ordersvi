@@ -9,6 +9,7 @@
 #include "accessreader.h"
 #include "indicatorsmodel.h"
 #include "settingsmodel.h"
+#include "src/nightcharts.h"
 
 namespace Ui {
     class MainWindow;
@@ -39,6 +40,9 @@ private:
     SettingsModel *settings;
     AccessReader *accessReader;
     IndicatorsModel indicatorsModel;
+    Nightcharts amountChart;
+    Nightcharts sumChart;
+    Nightcharts cashChart;
 
     QAction *loginAction;
     QAction *settingsAction;
@@ -54,6 +58,9 @@ private:
     void createActions();
     void createMainMenu();
     void createTrayIcon();
+
+    void paintEvent(QPaintEvent *);
 };
+
 
 #endif // MAINWINDOW_H

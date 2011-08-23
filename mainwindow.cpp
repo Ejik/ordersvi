@@ -1,4 +1,5 @@
-#include "QDebug"
+#include <QDebug>
+#include <QPainter>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "accessreader.h"
@@ -25,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
+
+
 }
 
 MainWindow::~MainWindow()
@@ -38,22 +41,53 @@ void MainWindow::inject(SettingsModel *settings, AccessReader *accessReader)
     this->accessReader = accessReader;
 }
 
+void MainWindow::paintEvent(QPaintEvent *)
+{
+    QPainter painter;
+    painter.begin(this);
+
+    double width(this->width()/4);
+    double height(this->height()/2);
+    int i1Left(ui->lcdAmount->geometry().left() + 10);
+    int i2Left(ui->lcdSum->geometry().left() + 10);
+    int i3Left(ui->lcdCash->geometry().left() + 10);
+
+
+    amountChart.setType(Nightcharts::Pie);//{Histogramm,Pie,DPie};
+    amountChart.setLegendType(Nightcharts::Round);//{Round,Vertical}
+    amountChart.setCords(i1Left,40,width,height);
+    amountChart.addPiece("Item2",Qt::red,100);
+    amountChart.draw(&painter);
+    //PieChart.drawLegend(&painter);
+
+    sumChart.setType(Nightcharts::Pie);//{Histogramm,Pie,DPie};
+    sumChart.setLegendType(Nightcharts::Round);//{Round,Vertical}
+    sumChart.setCords(i2Left,40,width,height);
+    sumChart.addPiece("Item2",Qt::red,100);
+    sumChart.draw(&painter);
+
+    cashChart.setType(Nightcharts::Pie);//{Histogramm,Pie,DPie};
+    cashChart.setLegendType(Nightcharts::Round);//{Round,Vertical}
+    cashChart.setCords(i3Left,40,width,height);
+    cashChart.addPiece("Item2",Qt::red,100);
+    cashChart.draw(&painter);
+}
 
 void MainWindow::updateView()
 {
 
-    // update current username
-    ui->currentUserLabel->setText(settings->getUserName());
+    // update current username    
+    setWindowTitle("OrdersVi " + settings->getUserName());
 
-    // always on top setting
-    Qt::WindowFlags flags = this->windowFlags();
-    if (settings->getAlwaysOnTop()) {
-        this->setWindowFlags(flags | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
-        this->show();
-    } else {
-        this->setWindowFlags(flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
-        this->show();
-    }
+//    // always on top setting
+//    Qt::WindowFlags flags = this->windowFlags();
+//    if (settings->getAlwaysOnTop()) {
+//        this->setWindowFlags(flags | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+//        this->show();
+//    } else {
+//        this->setWindowFlags(flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
+//        this->show();
+//    }
 
     // update indicators
     ui->lcdAmount->display(indicatorsModel.getAmountPersent());

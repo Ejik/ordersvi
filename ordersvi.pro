@@ -14,14 +14,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     accessreader.cpp \
     logindialog.cpp \
-    settingsview.cpp
+    settingsview.cpp \
+    src/nightcharts.cpp
 
 HEADERS  += mainwindow.h \
     indicatorsmodel.h \
     accessreader.h \
     settingsmodel.h \
     logindialog.h \
-    settingsview.h
+    settingsview.h \
+    src/nightcharts.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui \
