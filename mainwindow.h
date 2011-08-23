@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QAction>
+#include <QEvent>
 #include <QMainWindow>
 #include <QMenu>
 #include <QSystemTrayIcon>
@@ -60,6 +61,7 @@ private:
     void createTrayIcon();
 
     void paintEvent(QPaintEvent *);
+    void changeEvent(QEvent *event);
 };
 
 

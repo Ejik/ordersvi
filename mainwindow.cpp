@@ -101,6 +101,19 @@ void MainWindow::paintEvent(QPaintEvent *)
     cashChart.draw(&painter);
 }
 
+void MainWindow::changeEvent (QEvent *event)
+{
+    if ((event->type() == QEvent::WindowStateChange) &&
+        isMinimized() &&
+        trayIcon.isVisible())
+    {
+        QTimer::singleShot(0, this, SLOT(hide()));
+        event->ignore();
+    }
+    else
+        QMainWindow::changeEvent(event);
+}
+
 void MainWindow::updateView()
 {        
     // update current username    
