@@ -33,8 +33,6 @@ int main(int argc, char *argv[])
         MainWindow w;
         w.inject(&settings, &accessReader);
         w.show();
-        // устанавливаем окно на старое место
-        w.move(settings.mainViewPos());
         w.updateView();
         return a.exec();
 

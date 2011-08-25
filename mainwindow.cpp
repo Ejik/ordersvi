@@ -41,6 +41,8 @@ void MainWindow::inject(SettingsModel *settings, AccessReader *accessReader)
     this->accessReader = accessReader;
 
     setAlwaysOnTopSetting();
+    // устанавливаем окно на старое место
+    move(settings->mainViewPos());
 }
 
 
