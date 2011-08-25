@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
         MainWindow w;
         w.inject(&settings, &accessReader);
         w.show();
+        w.init();
         w.updateView();
         return a.exec();
 

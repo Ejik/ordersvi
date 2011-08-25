@@ -24,6 +24,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void inject(SettingsModel* settings, AccessReader* accessReader);
+    void init();
     void updateView();
 
 private slots:
@@ -56,14 +57,14 @@ private:
     QSystemTrayIcon trayIcon;
     QMenu trayIconMenu;
 
+
     void createActions();
     void createMainMenu();
-    void createTrayIcon();
+    void createTrayIcon();   
     void setAlwaysOnTopSetting();
 
     void changeEvent(QEvent *event);
     void closeEvent(QCloseEvent *);
-    void moveEvent(QMoveEvent *);
     void paintEvent(QPaintEvent *);
 
 

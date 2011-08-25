@@ -39,12 +39,14 @@ void MainWindow::inject(SettingsModel *settings, AccessReader *accessReader)
 {
     this->settings = settings;
     this->accessReader = accessReader;
+}
 
+void MainWindow::init()
+{
     setAlwaysOnTopSetting();
     // устанавливаем окно на старое место
     move(settings->mainViewPos());
 }
-
 
 /////////////////
 // События формы
@@ -63,12 +65,9 @@ void MainWindow::changeEvent (QEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    settings->save();
-}
-
-void MainWindow::moveEvent(QMoveEvent *)
-{
     settings->setMainViewPos(pos());
+
+    settings->save();
 }
 
 void MainWindow::paintEvent(QPaintEvent *)

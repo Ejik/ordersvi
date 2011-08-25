@@ -61,7 +61,7 @@ public:
         settings.setValue("isAlwaysOnTop", isAlwaysOnTop);
         settings.setValue("isAutoStart", isAutoStart);
         settings.setValue("lastUserID", userid);
-        settings.setValue("mainViewRect", _mainViewPos);
+        settings.setValue("mainViewPos", _mainViewPos);
 
     }
     void restore() {
@@ -70,7 +70,7 @@ public:
         isAlwaysOnTop = settings.value("isAlwaysOnTop",  false).toBool();
         isAutoStart = settings.value("isAutoStart", false).toBool();
         userid = settings.value("lastUserID", "").toString();
-        _mainViewPos = settings.value("mainViewRect", QPoint(200,200)).toPoint();
+        _mainViewPos = settings.value("mainViewPos", QPoint(200,200)).toPoint();
     }
 };
 #endif // SETTINGSMODEL_H
