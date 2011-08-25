@@ -41,7 +41,7 @@ void SettingsView::inject(SettingsModel *settings, AccessReader *accessReader)
 
 void SettingsView::updateView()
 {
-   ui->alwaysOnTopBox->setChecked(settings->getAlwaysOnTop());
+   ui->alwaysOnTopBox->setChecked(settings->alwaysOnTop());
    ui->autostartApplicationBox->setChecked(settings->getAutoStartApplication());
 }
 

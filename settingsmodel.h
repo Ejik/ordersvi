@@ -1,7 +1,9 @@
 #ifndef SETTINGSMODEL_H
 #define SETTINGSMODEL_H
 
+#include <QPoint>
 #include <QSettings>
+
 
 class SettingsModel
 {
@@ -12,19 +14,20 @@ private:
     bool isAutoStart;
     QString appFilePath;
     QString userid;
-    QString userName;
+    QString username;
+    QPoint _mainViewPos;
 
 public:
-    SettingsModel(QString appFilePath) { userid = ""; userName = ""; isAlwaysOnTop = false; this->appFilePath = appFilePath; }
+    SettingsModel(QString appFilePath) { userid = ""; username = ""; isAlwaysOnTop = false; this->appFilePath = appFilePath; }
 
-    bool getAlwaysOnTop() { return isAlwaysOnTop; }
-    void setAlwaysOnTop(bool value) { isAlwaysOnTop  = value; }
-
-    QString getUserID() { return userid; }
+    QString userID() { return userid; }
     void setUserID(QString value) { userid = value; }
 
-    QString getUserName() { return userName; }
-    void setUserName(QString value) { userName = value; }
+    QString userName() { return username; }
+    void setUserName(QString value) { username = value; }
+
+    bool alwaysOnTop() { return isAlwaysOnTop; }
+    void setAlwaysOnTop(bool value) { isAlwaysOnTop  = value; }
 
     void setAutoStartApplication(bool start) {
 #if defined(Q_WS_WIN)
@@ -48,6 +51,26 @@ public:
 #else
         return false;
 #endif
+    }
+
+    QPoint mainViewPos() { return _mainViewPos; }
+    void setMainViewPos(QPoint value) { _mainViewPos = value; }
+
+    void save() {
+        QSettings settings;
+        settings.setValue("isAlwaysOnTop", isAlwaysOnTop);
+        settings.setValue("isAutoStart", isAutoStart);
+        settings.setValue("lastUserID", userid);
+        settings.setValue("mainViewRect", _mainViewPos);
+
+    }
+    void restore() {
+
+        QSettings settings;
+        isAlwaysOnTop = settings.value("isAlwaysOnTop",  false).toBool();
+        isAutoStart = settings.value("isAutoStart", false).toBool();
+        userid = settings.value("lastUserID", "").toString();
+        _mainViewPos = settings.value("mainViewRect", QPoint(200,200)).toPoint();
     }
 };
 #endif // SETTINGSMODEL_H

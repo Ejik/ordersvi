@@ -11,13 +11,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    timer.start(1000*60);
+
     // убираем кнопку максимизировать
     setWindowFlags( (windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowMaximizeButtonHint);
 
     ui->setupUi(this);
-
-
-    timer.start(1000*6);
 
     createActions();
     createMainMenu();
@@ -28,8 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateModel()));
     connect(&trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-
-
 
 }
 
@@ -42,6 +39,34 @@ void MainWindow::inject(SettingsModel *settings, AccessReader *accessReader)
 {
     this->settings = settings;
     this->accessReader = accessReader;
+
+    setAlwaysOnTopSetting();
+}
+
+
+/////////////////
+// События формы
+void MainWindow::changeEvent (QEvent *event)
+{
+    if ((event->type() == QEvent::WindowStateChange) &&
+        isMinimized() &&
+        trayIcon.isVisible())
+    {
+        QTimer::singleShot(0, this, SLOT(hide()));
+        event->ignore();
+    }
+    else
+        QMainWindow::changeEvent(event);
+}
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    settings->save();
+}
+
+void MainWindow::moveEvent(QMoveEvent *)
+{
+    settings->setMainViewPos(pos());
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -101,23 +126,21 @@ void MainWindow::paintEvent(QPaintEvent *)
     cashChart.draw(&painter);
 }
 
-void MainWindow::changeEvent (QEvent *event)
+void MainWindow::setAlwaysOnTopSetting()
 {
-    if ((event->type() == QEvent::WindowStateChange) &&
-        isMinimized() &&
-        trayIcon.isVisible())
-    {
-        QTimer::singleShot(0, this, SLOT(hide()));
-        event->ignore();
+    Qt::WindowFlags flags = this->windowFlags();
+    if (settings->alwaysOnTop()) {
+        this->setWindowFlags(flags | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+    } else {
+        this->setWindowFlags(flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
     }
-    else
-        QMainWindow::changeEvent(event);
+    this->show();
 }
 
 void MainWindow::updateView()
 {        
     // update current username    
-    setWindowTitle("OrdersVi - " + settings->getUserName());
+    setWindowTitle("OrdersVi - " + settings->userName());
 
     // update indicators
     ui->lcdAmount->display(indicatorsModel.getAmountPersent());
@@ -125,7 +148,7 @@ void MainWindow::updateView()
     ui->lcdCash->display(indicatorsModel.getCashPersent());
 
     // update tray
-    trayIcon.setToolTip(tr("Текущий пользователь: ") + settings->getUserName() + "\n" +
+    trayIcon.setToolTip(tr("Текущий пользователь: ") + settings->userName() + "\n" +
                         tr("Кол-во: ") + QString::number(indicatorsModel.getAmount()) + "\n" +
                         tr("Сумма: ") + QString::number(indicatorsModel.getSum()) + "\n" +
                         tr("Выручка: ") + QString::number(indicatorsModel.getCash()));
@@ -167,14 +190,7 @@ void MainWindow::actionSettings_triggered()
         settings->setAlwaysOnTop(settingsView.isAlwaysOnTop());
 
         // always on top setting
-        Qt::WindowFlags flags = this->windowFlags();
-        if (settings->getAlwaysOnTop()) {
-            this->setWindowFlags(flags | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
-            this->show();
-        } else {
-            this->setWindowFlags(flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
-            this->show();
-        }
+        setAlwaysOnTopSetting();
 
         // autostart application
         settings->setAutoStartApplication(settingsView.isAutostartApplication());

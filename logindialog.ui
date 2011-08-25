@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Вход в программу</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="ordersvi.qrc">
+    <normaloff>:/images/bad.svg</normaloff>:/images/bad.svg</iconset>
+  </property>
   <property name="modal">
    <bool>false</bool>
   </property>
@@ -88,6 +92,8 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="ordersvi.qrc"/>
+ </resources>
  <connections/>
 </ui>

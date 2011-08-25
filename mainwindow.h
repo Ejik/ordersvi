@@ -59,9 +59,14 @@ private:
     void createActions();
     void createMainMenu();
     void createTrayIcon();
+    void setAlwaysOnTopSetting();
 
-    void paintEvent(QPaintEvent *);
     void changeEvent(QEvent *event);
+    void closeEvent(QCloseEvent *);
+    void moveEvent(QMoveEvent *);
+    void paintEvent(QPaintEvent *);
+
+
 };
 
 

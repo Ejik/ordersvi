@@ -15,20 +15,30 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
+    QCoreApplication::setOrganizationName("ACSGroup");
+    QCoreApplication::setOrganizationDomain("acsgroup.com");
+    QCoreApplication::setApplicationName("OrdersVi");
+
     SettingsModel settings(a.applicationFilePath());
+    settings.restore();
+
     AccessReader accessReader;
     accessReader.inject(&settings);
 
     LoginDialog loginView;
     if (loginView.showDialog(&settings, &accessReader) == QDialog::Accepted) {
 
-        qDebug() << "Current userID: " << settings.getUserID();
+        qDebug() << "Current userID: " << settings.userID();
 
         MainWindow w;
-        w.show();
         w.inject(&settings, &accessReader);
+        w.show();
+        // устанавливаем окно на старое место
+        w.move(settings.mainViewPos());
         w.updateView();
         return a.exec();
+
     }
+
     return 0;
 }

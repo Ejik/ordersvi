@@ -65,7 +65,7 @@ IndicatorsModel AccessReader::getData() {
 
         query.bindValue(":date1", QDate(currentYear, currentMonth, 1));
         query.bindValue(":date2", QDate(currentYear, currentMonth, daysInCurrentMonth));
-        query.bindValue(":userID", settings->getUserID());
+        query.bindValue(":userID", settings->userID());
 
         if (query.exec()) {
 
