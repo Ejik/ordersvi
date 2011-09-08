@@ -42,13 +42,21 @@ IndicatorsModel AccessReader::getData() {
 
         QSqlQuery query;
 
-        QString sql = "SELECT COUNT(1) AS Amount, SUM(DH2457.SP2451) AS Summa , Users.ID AS ManagerID "
-                "FROM (DH2457 INNER JOIN _1SJOURN AS Journal ON DH2457.IDDOC=Journal.IDDOC) "
-                "INNER JOIN SC30 AS Users ON Journal.SP74 = Users.ID "
+        QString sql = "SELECT COUNT(1) AS Amount, SUM(DH2457.SP2451) AS Summa, ZaprosCash.Cash AS Cash, Users.ID "
+                "FROM ((DH2457 INNER JOIN _1SJOURN AS Journal ON DH2457.IDDOC=Journal.IDDOC) "
+                "INNER JOIN SC30 AS Users ON Journal.SP74 = Users.ID) "
+                "LEFT JOIN ( "
+                "SELECT Users.ID AS ManagerID, SUM(RA4674.SP4673) AS Cash "
+                "FROM (RA4674 INNER JOIN _1SJOURN AS Journal ON RA4674.SP4671=Journal.IDDOC) "
+                "INNER JOIN SC30 AS Users ON Journal.SP74=Users.ID "
+                "WHERE RA4674.DEBKRED=1 AND Journal.ISMARK IS NULL "
+                "AND Journal.Date Between :date1 AND :date2 "
+                "GROUP BY Users.ID) AS ZaprosCash "
+                "ON Users.ID = ZaprosCash.ManagerID "
                 "WHERE Journal.ISMARK IS NULL "
                 "AND Users.ID = :userID "
                 "AND Journal.Date Between :date1 AND :date2 "
-                "GROUP BY Users.ID;";
+                "GROUP BY Users.ID, ZaprosCash.Cash;";
 
 
         query.prepare(sql);
@@ -73,7 +81,7 @@ IndicatorsModel AccessReader::getData() {
             if (query.isValid()) {
                 amount = query.value(0).toInt();
                 summa = query.value(1).toInt();
-                cash = 0;
+                cash = query.value(2).toInt();
             }
         } else {
             qDebug() << query.lastError();
@@ -86,20 +94,29 @@ IndicatorsModel AccessReader::getData() {
         // Получаем нормативные показатели за месяц
         QSqlQuery normsQuery;
         sql = "SELECT * "
-                "FROM Norms";
-        if (normsQuery.exec(sql)) {
+                "FROM Norms "
+                "WHERE USERID = :userID";
+        normsQuery.prepare(sql);
+        normsQuery.bindValue(":userID", settings->userID());
+        if (normsQuery.exec()) {
 
-            // Кол-во
-            normsQuery.next();
-            model.setNAmount(normsQuery.value(currentMonth + 1).toInt());
+            model.setNAmount(0);
+            model.setNSum(0);
+            model.setNCash(0);
 
-            // Сумма
-            normsQuery.next();
-            model.setNSum(normsQuery.value(currentMonth + 1).toInt());
+            if (normsQuery.size() > 0) {
+                // Кол-во
+                normsQuery.next();
+                model.setNAmount(normsQuery.value(currentMonth + 1).toInt());
 
-            // Выручка
-            normsQuery.next();
-            model.setNCash(normsQuery.value(currentMonth + 1).toInt());
+                // Сумма
+                normsQuery.next();
+                model.setNSum(normsQuery.value(currentMonth + 1).toInt());
+
+                // Выручка
+                normsQuery.next();
+                model.setNCash(normsQuery.value(currentMonth + 1).toInt());
+            }
 
         } else {
             qDebug() << normsQuery.lastError();

@@ -30,6 +30,8 @@ private:
     QSqlTableModel tableModel;
     AccessReader *accessReader;
     SettingsModel *settings;
+
+    void updateNormsTable();
 };
 
 #endif // SETTINGSVIEW_H

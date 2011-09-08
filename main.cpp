@@ -28,8 +28,6 @@ int main(int argc, char *argv[])
     LoginDialog loginView;
     if (loginView.showDialog(&settings, &accessReader) == QDialog::Accepted) {
 
-        qDebug() << "Current userID: " << settings.userID();
-
         MainWindow w;
         w.inject(&settings, &accessReader);
         w.show();
